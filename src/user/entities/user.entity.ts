@@ -1,5 +1,3 @@
-import { Type } from 'class-transformer';
-import { IsEnum, ValidateNested } from 'class-validator';
 import { ERoles } from 'src/common/enumerators/roles.enumerator';
 import {
   Entity,
@@ -9,6 +7,7 @@ import {
   UpdateDateColumn,
   DeleteDateColumn,
 } from 'typeorm';
+import { UserAddress } from './user-address.entity';
 
 @Entity({ name: 'users' })
 export class UserEntity {
@@ -30,35 +29,24 @@ export class UserEntity {
   @Column({ name: 'birth', nullable: false })
   birth: Date;
 
-  @Column({ name: 'address', nullable: false })
-  @ValidateNested()
-  @Type(() => Address)
-  address: Address;
+  // @Column({ name: 'address', nullable: false })
+  // address: UserAddress;
+
+  @Column({ name: 'profile_image', type: 'bytea', nullable: true })
+  profileImage: Buffer;
 
   @Column({ name: 'role', default: 'USER' })
-  @IsEnum(ERoles, {
-    message: "The specified Role doesn't correspond to possible values!",
-  })
   role: ERoles;
 
   @Column({ name: 'isActive', nullable: false, default: false })
   isActive: boolean;
 
   @CreateDateColumn({ name: 'created_at' })
-  createdAt: string;
+  createdAt: Date;
 
   @UpdateDateColumn({ name: 'updated_at' })
-  updatedAt: string;
+  updatedAt: Date;
 
   @DeleteDateColumn({ name: 'deleted_at' })
-  deletedAt: string;
-}
-
-class Address {
-  street: string;
-  number: number;
-  neighborhood: string;
-  city: string;
-  state: string;
-  postalCode: string;
+  deletedAt: Date;
 }
